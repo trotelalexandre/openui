@@ -42,7 +42,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NextTopLoader />
+          <NextTopLoader showSpinner={false} />
           <Navbar isAuthenticated={isAuthenticated} />
 
           {children}
