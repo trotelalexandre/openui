@@ -27,3 +27,16 @@ export async function createClient() {
     },
   );
 }
+
+export async function getSupabaseAuth() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isAuthenticated = Boolean(user);
+  const userId = user?.id;
+  const userMetadata = user?.user_metadata;
+
+  return { isAuthenticated, userId, userMetadata };
+}

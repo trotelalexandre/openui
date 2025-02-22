@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { AuthButton } from "@/components/auth-button";
-import { User } from "@supabase/supabase-js";
 import { Button } from "./ui/button";
 
 interface NavbarProps {
-  user: User | null;
+  isAuthenticated: boolean;
 }
 
 const nav = [
@@ -12,7 +11,7 @@ const nav = [
   { href: "/upload", label: "Upload" },
 ];
 
-export function Navbar({ user }: NavbarProps) {
+export function Navbar({ isAuthenticated }: NavbarProps) {
   return (
     <nav className="flex justify-between border-b p-4">
       <div className="space-x-2">
@@ -23,7 +22,7 @@ export function Navbar({ user }: NavbarProps) {
         ))}
       </div>
 
-      <AuthButton user={user} />
+      <AuthButton isAuthenticated={isAuthenticated} />
     </nav>
   );
 }

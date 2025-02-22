@@ -4,10 +4,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { createClient } from "@/lib/supabase/server";
+import { getSupabaseAuth } from "@/lib/supabase/server";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/sonner";
-import AuthProvider from "@/providers/auth-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,12 +29,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const isAuthenticated = Boolean(user);
+  const { isAuthenticated } = await getSupabaseAuth();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -48,14 +42,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider userId={user?.id} isAuthenticated={isAuthenticated}>
-            <NextTopLoader />
-            <Navbar user={user} />
+          <NextTopLoader />
+          <Navbar isAuthenticated={isAuthenticated} />
 
-            {children}
+          {children}
 
-            <Toaster />
-          </AuthProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

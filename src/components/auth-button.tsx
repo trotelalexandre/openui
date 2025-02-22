@@ -2,24 +2,23 @@
 
 import { signInWithGitHub, signOut } from "@/actions/auth.action";
 import { Button } from "@/components/ui/button";
-import { User } from "@supabase/supabase-js";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface AuthButtonProps {
-  user: User | null;
+  isAuthenticated: boolean;
 }
 
-export function AuthButton({ user }: AuthButtonProps) {
+export function AuthButton({ isAuthenticated }: AuthButtonProps) {
   const [loading, setLoading] = useState(false);
   const [waitingForUser, setWaitingForUser] = useState(false);
 
   useEffect(() => {
-    if (waitingForUser && user) {
+    if (waitingForUser && isAuthenticated) {
       setWaitingForUser(false);
     }
-  }, [user, waitingForUser]);
+  }, [isAuthenticated, waitingForUser]);
 
   const handleSignIn = async () => {
     setLoading(true);
@@ -46,7 +45,7 @@ export function AuthButton({ user }: AuthButtonProps) {
     }
   };
 
-  if (user) {
+  if (isAuthenticated) {
     return (
       <Button variant="outline" onClick={handleSignOut} disabled={loading}>
         {loading && <Loader2 className="mr-1 h-5 w-5 animate-spin" />}
