@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { createClient } from "@/lib/supabase/server";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/sonner";
+import AuthProvider from "@/providers/auth-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default async function RootLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  const isAuthenticated = Boolean(user);
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -46,12 +48,14 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NextTopLoader />
-          <Navbar user={user} />
+          <AuthProvider userId={user?.id} isAuthenticated={isAuthenticated}>
+            <NextTopLoader />
+            <Navbar user={user} />
 
-          {children}
+            {children}
 
-          <Toaster />
+            <Toaster />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

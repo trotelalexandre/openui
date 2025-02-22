@@ -15,7 +15,7 @@ export const components = pgTable(
     id: serial("id").primaryKey(),
     name: text("name").notNull(),
     description: text("description"),
-    code: text("code").notNull(),
+    url: text("url").notNull(),
     type: text("type").references(() => componentTypes.name),
     userId: uuid("user_id").references(() => authUsers.id),
     createdAt: timestamp("created_at").defaultNow(),
