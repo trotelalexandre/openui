@@ -5,6 +5,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { createClient } from "@/lib/supabase/server";
+import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,8 +46,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <NextTopLoader />
           <Navbar user={user} />
+
           {children}
+
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

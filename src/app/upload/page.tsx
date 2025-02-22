@@ -5,6 +5,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 interface FormData extends FieldValues {
   name: string;
@@ -13,7 +14,6 @@ interface FormData extends FieldValues {
 }
 
 // TODO: use form tuto from shadcn/ui
-// TODO: setup toaster and sonner from shadcn/ui and use it here by try catch the fetch
 export default function Page() {
   const [loading, setLoading] = useState(false);
 
@@ -22,12 +22,16 @@ export default function Page() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true);
 
-    await fetch("/api/upload", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-
-    setLoading(false);
+    try {
+      await fetch("/api/upload", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+    } catch {
+      toast("An error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
