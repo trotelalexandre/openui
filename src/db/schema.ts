@@ -16,6 +16,7 @@ export const components = pgTable(
     name: text("name").notNull(),
     description: text("description"),
     code: text("code").notNull(),
+    type: text("type").references(() => componentTypes.name),
     userId: uuid("user_id").references(() => authUsers.id),
     createdAt: timestamp("created_at").defaultNow(),
   },
@@ -25,6 +26,20 @@ export const components = pgTable(
       to: authenticatedRole,
       for: "all",
       using: sql`${table.userId}::uuid = ${authUid}`,
+    }),
+  ],
+).enableRLS();
+
+export const componentTypes = pgTable(
+  "component_types",
+  {
+    name: text("name").primaryKey(),
+  },
+  () => [
+    pgPolicy("authenticated_component_types", {
+      as: "permissive",
+      to: authenticatedRole,
+      for: "select",
     }),
   ],
 ).enableRLS();
