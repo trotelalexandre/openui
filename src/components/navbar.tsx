@@ -15,7 +15,7 @@ const nav = [
 export function Navbar({ user }: NavbarProps) {
   return (
     <nav className="flex justify-between border-b p-4">
-      <div className="space-x-4">
+      <div className="space-x-2">
         {nav.map(({ href, label }) => (
           <Button key={href} variant="ghost" asChild>
             <Link href={href}>{label}</Link>
